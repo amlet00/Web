@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Заказ</h2>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <h3>Пицца Пеперони {{ pizza1.price }} ₽</h3>
+    <img src="/static/img/pizzas/peperoni.jpg"
+         width="256" height="256">
+    <p>
+        {{ form.amount_pizza1.label }}<br>
+        {{ form.amount_pizza1(class="form-control") }}<br>
+        {% for error in form.amount_pizza1.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </p>
+    <h3>Пицца Маргарита {{ pizza2.price }} ₽</h3>
+    <img src="/static/img/pizzas/margharita.jpg"
+         width="256" height="256">
+    <p>
+        {{ form.amount_pizza2.label }}<br>
+        {{ form.amount_pizza2(class="form-control") }}<br>
+        {% for error in form.amount_pizza2.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </p>
+    <h3>Пицца Гавайская {{ pizza3.price }} ₽</h3>
+    <img src="/static/img/pizzas/hawaiian.jpg"
+         width="256" height="256">
+    <p>
+        {{ form.amount_pizza3.label }}<br>
+        {{ form.amount_pizza3(class="form-control") }}<br>
+        {% for error in form.amount_pizza3.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    <div>{{ message }}</div>
+</form>
+{% endblock %}

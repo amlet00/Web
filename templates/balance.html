@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Пополнение баланса</h2>
+<img src="https://avatars.dzeninfra.ru/get-zen_doc/4347415/pub_61c2f4494b23ed51b13974cd_61c2fde2ef9a5227a7e1b185/scale_1200">
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.money.label }}<br>
+        {{ form.money(class="form-control") }}<br>
+        {% for error in form.money.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    <div>{{ message }}</div>
+</form>
+{% endblock %}

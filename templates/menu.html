@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if message %}
+    {{ message }}
+{% else %}
+    <h2>Список заказов</h2>
+{% endif %}
+{% for item in orders %}
+<h3>Заказ № {{ item.id }}</h3>
+<table class="table">
+    <thead>
+        <tr class="table-secondary">
+            <th>Pizza</th>
+            <th>amount</th>
+            <th>price per one</th>
+            <th>sum price</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% set total = [0] %}
+    {% set main_loop = loop.index %}
+    {% for orders_dict in list_of_orders_dict %}
+        {% if loop.index == main_loop %}
+            {% for pizza in orders_dict if orders_dict[pizza] != 0 %}
+                <tr>
+                    <td>{{ pizza.name }}</td>
+                    <td>{{ orders_dict[pizza] }}</td>
+                    <td>{{ pizza.price }} ₽</td>
+                    <td>{{ pizza.price * orders_dict[pizza] }} ₽</td>
+                </tr>
+                {% set _ = total.append(total.pop() + pizza.price * orders_dict[pizza]) %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+        <tr>
+            <td> </td>
+            <td> </td>
+            <td>Итого:</td>
+            <td>{{ total[0] }} ₽</td>
+        </tr>
+    </tbody>
+</table>
+{% if current_user.is_authenticated and current_user.is_manager == 1%}
+    <div>
+        {% if item.status == 0 %}
+            <a href="/accept_order/{{ item.id }}" class="btn btn-success">
+                Принять заказ
+            </a>
+            <a href="/cancel_order/{{ item.id }}" class="btn btn-danger">
+                Отменить заказ
+            </a>
+        {% elif item.status == 1 %}
+            <h3>Заказ принят</h3>
+        {% else %}
+            <h3>Заказ отменён</h3>
+        {% endif %}
+    </div>
+{% elif current_user.is_authenticated %}
+    <div>
+        {% if item.status == 1 %}
+            <a href="/pay_for_order/{{ item.id }}" class="btn btn-success">
+                Оплатить заказ
+            </a>
+        {% elif item.status == 2 %}
+            <h3>Заказ отменён</h3>
+        {% endif %}
+        <a href="/delete_order/{{ item.id }}" class="btn btn-danger">
+            Удалить заказ
+        </a>
+    </div>
+{% endif %}
+{% endfor %}
+{% endblock %}
